@@ -1,0 +1,113 @@
+﻿@model domRescuePet.Models.DonateViewModel
+@{
+    ViewBag.Title = "Donate";
+}
+
+<!-- about section -->
+<h1 class="accent text-center">Support Our Rescue Pets</h1>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="donate-box">
+            <h3 class="section-label">Why Donate?</h3>
+            <p>
+                Your support keeps tails wagging and whiskers twitching!
+                Donations go directly toward nutritious food, safe shelter,
+                veterinary care, and enrichment activities for every animal in our care.
+                Each contribution not only helps with daily essentials but also
+                ensures that rescue pets can recover, thrive, and find loving forever homes.
+            </p>
+            <p>
+                Together, we can transform lives—one paw at a time.
+                Thank you for being part of their journey!
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="donate-box">
+            @using (Html.BeginForm("Donate", "Home", FormMethod.Post))
+            {
+                <!-- user details -->
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-2">
+                        <label for="SelectedUserId">Full Name</label>
+                        @Html.DropDownListFor(m => m.SelectedUserId, Model.Users, "Select User",
+                                 new { @class = "form-control", id = "userSelect" })
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label for="SelectedPhoneId">Phone Number</label>
+                        @Html.DropDownListFor(m => m.SelectedPhoneId, Model.Phones, "Select Phone",
+                                 new { @class = "form-control", id = "phoneSelect" })
+                    </div>
+                </div>
+
+                <!-- amount to donate -->
+                <div class="mb-3">
+                    <label for="Amount">Donation Amount (ZAR)</label>
+                    @Html.TextBoxFor(m => m.Amount,
+                             new { @class = "form-control", type = "number", step = "0.01", min = "1" })
+                </div>
+
+                <!-- submit donation button -->
+                <div class="text-end">
+                    <button type="submit" class="btn btn-lg btn-outline-adopt">Donate</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="mb-4">
+    <!-- show donations = progress bar -->
+    <label class="fw-bold">Goal: R@(Model.Goal.ToString("N2"))</label>
+    <div class="progress" style="height: 25px;">
+        @{
+            var percentage = Math.Min((Model.TotalRaised / Model.Goal) * 100, 100);
+            var remainingPercent = Math.Max(100 - percentage, 0);
+        }
+        <div class="progress-bar" role="progressbar"
+             style="width:@percentage%;">
+            R@(Model.TotalRaised.ToString("N2")) raised
+            (@remainingPercent.ToString("0")% to goal)
+        </div>
+    </div>
+</div>
+
+<div class="donation-image-container text-center">
+    @* donation goal reached = show special message + image *@
+    @if (Model.TotalRaised >= Model.Goal)
+    {
+        <div class="goal-banner">
+            <strong>Goal reached!</strong> Thank you for helping us reach R@(Model.Goal.ToString("N2"))!
+        </div>
+        <img src="~/Content/Images/donation_complete.png"
+             alt="Donation Complete"
+             class="donation-image img-fluid rounded shadow" />
+    }
+    @* donation goal not reached = donate iamge *@
+    else
+    {
+    <img src="~/Content/Images/donate.jpg"
+         alt="Donate"
+         class="donation-image img-fluid rounded shadow" />
+    }
+</div>
+
+@section Scripts {
+    <script>
+        /* populate user phone number filter = number according to user */
+        $(document).ready(function () {
+            $("#userSelect").change(function () {
+                var userId = $(this).val();
+                $.getJSON('@Url.Action("GetPhonesByUser")', { userId: userId }, function (phones) {
+                    var phoneDropdown = $("#phoneSelect");
+                    phoneDropdown.empty().append('<option value="">Select Phone</option>');
+                    $.each(phones, function (i, p) {
+                        phoneDropdown.append('<option value="' + p.PhoneId + '">' + p.PhoneNumber + '</option>');
+                    });
+                });
+            });
+        });
+    </script>
+}

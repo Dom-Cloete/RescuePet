@@ -1,0 +1,147 @@
+﻿@model List<domRescuePet.Models.Pet>
+
+<h1 class="accent">Pets</h1>
+
+@using (Html.BeginForm("Pets", "Home", FormMethod.Get))
+{
+    <!-- type filter -->
+    <div class="row mb-3 align-items-end">
+        <div class="col-md-3 col-sm-6 mb-2">
+            <label class="filter-label" for="breedId">Type</label>
+            <select name="typeId" id="typeId" class="form-control">
+                <option value="0">All Types</option>
+                @foreach (var type in ViewBag.Types)
+                {
+                    <option value="@type.TypeId" @(ViewBag.SelectedType == type.TypeId ? "selected" : "")>
+                        @type.TypeName
+                    </option>
+                }
+            </select>
+        </div>
+
+        <!-- breed filter -->
+        <div class="col-md-3 col-sm-6 mb-2">
+            <label class="filter-label" for="breedId">Breed</label>
+            <select name="breedId" id="breedId" class="form-control" @(ViewBag.SelectedType == 0 ? "disabled" : "")>
+                <option value="0">All Breeds</option>
+                @foreach (var breed in ViewBag.Breeds)
+                {
+                    <option value="@breed.BreedId" @(ViewBag.SelectedBreed == breed.BreedId ? "selected" : "")>
+                        @breed.BreedName
+                    </option>
+                }
+            </select>
+        </div>
+
+        <!-- location filter -->
+        <div class="col-md-3 col-sm-6 mb-2">
+            <label class="filter-label" for="locationId">Location</label>
+            <select name="locationId" id="locationId" class="form-control">
+                <option value="0">All Locations</option>
+                @foreach (var loc in ViewBag.Locations)
+                {
+                    <option value="@loc.LocationId" @(ViewBag.SelectedLocation == loc.LocationId ? "selected" : "")>
+                        @loc.LocationName
+                    </option>
+                }
+            </select>
+        </div>
+
+        <!-- buttons -->
+        <div class="col-md-3 col-sm-6 mb-2 d-flex flex-column">
+            <label class="filter-label">&nbsp;</label>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-block">Search</button>
+                <a href="@Url.Action("Pets")" class="btn btn-block">Clear</a>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    @foreach (var pet in Model)
+    {
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card pet-card h-100">
+
+                <!-- image -->
+                @if (!string.IsNullOrEmpty(pet.GetImage))
+                {
+                    <img class="card-img-top" src="data:image/png;base64,@pet.GetImage"
+                         alt="@pet.PetName" />
+                }
+                else
+                {
+                    <div class="no-image">
+                        <span>No image</span>
+                    </div>
+                }
+
+                <!-- status -> available = show view button; adopted = show adopted by + date -->
+                @{
+                    var normalizedStatus = (pet.Status ?? "Available").Trim().ToLower();
+                    var statusClass = normalizedStatus == "adopted" ? "adopted" : "available";
+                    var isAvailable = normalizedStatus == "available";
+                }
+                <div class="pet-status @statusClass">
+                    @if (isAvailable)
+                    {
+                        <span>Available</span>
+                    }
+                    else
+                    {
+                        <span>
+                            Adopted by @(pet.AdopterName ?? "Unknown") on @(pet.AdoptionDate?.ToString("dd MMM yyyy") ?? "Unknown Date")
+                        </span>
+                    }
+                </div>
+
+                <!-- pet details = summary -->
+                <div class="card-body">
+                    <h5 class="card-title">@pet.PetName <small>(@pet.Gender)</small></h5>
+                    <p class="card-text"><strong>Location:</strong> @pet.LocationName</p>
+                    <p class="card-text"><strong>Age:</strong> @pet.Age yrs</p>
+                    <p class="card-text"><strong>Weight:</strong> @pet.Weight kg</p>
+                    <p class="card-text">@pet.PetStory_Short</p>
+                    <p class="card-text"><small>Posted by: @pet.PosterName</small></p>
+                </div>
+
+                <!-- status available = view button -->
+                @if (pet.Status == "Available")
+                {
+                    <div class="card-footer text-center">
+                        <a href="@Url.Action("Adopt", "Home", new { id = pet.PetId })" class="btn btn-block">VIEW</a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+
+    /* populate breed filter = only if type selected + breed according to type */
+    $(document).ready(function () {
+        $("#typeId").change(function () {
+            var typeId = $(this).val();
+            var breedDropdown = $("#breedId");
+
+            breedDropdown.empty();
+            breedDropdown.append('<option value="0">All Breeds</option>');
+
+            if (typeId == "0") {
+                breedDropdown.prop("disabled", true);
+            } else {
+                breedDropdown.prop("disabled", false);
+
+                $.getJSON('@Url.Action("GetBreedsByType", "Home")', { typeId: typeId }, function (data) {
+                    $.each(data, function (i, breed) {
+                        breedDropdown.append('<option value="' + breed.BreedId + '">' + breed.BreedName + '</option>');
+                    });
+                });
+            }
+        });
+    });
+    </script>
+}

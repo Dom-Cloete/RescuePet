@@ -1,0 +1,334 @@
+﻿/*
+    Colour and font scheme:
+    background = white: #ffffffff;
+    headings = dark-moss-green: #474b24ff; -> Lora
+    body text = licorice: #291711ff; -> Martel Sans
+    navbar = dun: #d8c8a7ff;
+    buttons = burnt-orange: #bc591cff;
+    accent = Asap
+*/
+
+/* body elements */
+body {
+    font-family: 'Martel Sans', sans-serif;
+    background-color: #ffffffff;
+    color: #291711ff;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', serif;
+    color: #474b24ff;
+    font-weight: 600;
+}
+
+.accent {
+    font-family: 'Asap', sans-serif;
+    color: #bc591cff;
+}
+
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* navbar */
+.navbar {
+    background-color: #d8c8a7ff !important;
+    font-family: 'Martel Sans', sans-serif;
+}
+
+    .navbar .navbar-brand {
+        font-family: 'Asap', sans-serif;
+        font-weight: 700;
+        color: #291711ff !important;
+    }
+
+    .navbar .nav-link {
+        color: #291711ff !important;
+        transition: color 0.3s ease, background-color 0.3s ease;
+        padding: 8px 15px;
+        border-radius: 6px;
+    }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link:focus {
+            color: #ffffffff !important;
+            background-color: #bc591cff;
+        }
+
+/* buttons */
+.btn,
+button,
+input[type="submit"] {
+    background-color: #bc591cff;
+    border: none;
+    color: #ffffffff;
+    font-family: 'Asap', sans-serif;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+    .btn:hover,
+    button:hover,
+    input[type="submit"]:hover {
+        background-color: #a64e1aff;
+        transform: translateY(-2px);
+    }
+
+.btn-block {
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .btn-block {
+        margin-top: 10px;
+    }
+}
+
+/* tables */
+table.table {
+    border: 1px solid #474b24ff;
+}
+
+    table.table th,
+    table.table td {
+        border: 1px solid #474b24ff;
+    }
+
+    table.table thead th {
+        background-color: #f2f2f2;
+        color: #474b24ff;
+        font-weight: 600;
+    }
+
+/* about boxes */
+.about-box {
+    background-color: #e6dcc7;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* forms */
+input,
+select,
+textarea {
+    max-width: 280px;
+    border: 1px solid #d8c8a7ff;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-family: 'Martel Sans', sans-serif;
+}
+
+/* footer */
+footer {
+    margin-top: 20px;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    color: #291711ff;
+    border-top: 1px solid #d8c8a7ff;
+    text-align: center;
+}
+
+/* cards */
+.pet-card {
+    border: 1px solid #474b24ff;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+    .pet-card .card-body {
+        flex: 1 1 auto;
+    }
+
+    .pet-card .card-footer {
+        background-color: transparent;
+        border-top: none;
+    }
+
+    .pet-card .card-img-top {
+        width: 100%;
+        max-height: 250px;
+        object-fit: contain;
+        display: block;
+    }
+
+    .pet-card .no-image {
+        height: 200px;
+        background-color: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+/* filter labels */
+.filter-label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* pet status */
+.pet-card .pet-status {
+    text-align: center;
+    padding: 6px 0;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    width: 75%;
+    margin: 0 auto;
+    display: block;
+}
+
+    .pet-card .pet-status.available {
+        background-color: #eaf0e5;
+        color: #474b24ff;
+        border: 1px solid #474b24ff;
+    }
+
+    .pet-card .pet-status.adopted {
+        background-color: #f2eae7;
+        color: #291711ff;
+        border: 1px solid #291711ff;
+    }
+
+/*adopt pet*/
+.pet-image-container {
+    position: relative;
+    text-align: center;
+}
+
+.section-label {
+    font-family: 'Asap', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #bc591cff;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #bc591cff;
+    display: inline-block;
+    padding-bottom: 2px;
+}
+
+.pet-details {
+    background-color: #fefdf8;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.spec {
+    font-weight: 600;
+    color: #474b24ff;
+    margin: 4px 0;
+}
+
+.pet-story {
+    font-family: 'Martel Sans', sans-serif;
+    color: #291711ff;
+    font-size: 1rem;
+}
+
+.adopt-btn {
+    background-color: #bc591cff;
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+    .adopt-btn:hover {
+        background-color: #a64e1aff;
+        transform: translateY(-2px);
+    }
+
+/* post */
+.btn-outline-adopt {
+    background-color: #bc591cff;
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 12px 24px;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-adopt:hover {
+        background-color: #a64e1aff;
+        transform: translateY(-2px);
+    }
+
+.image-upload-placeholder {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+    margin-bottom: 5px;
+}
+
+/* donate */
+.donate-box {
+    background-color: #fefdf8;
+    border: 1px solid #d8c8a7ff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.progress {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #e6dcc7;
+}
+
+.progress-bar {
+    font-weight: 600;
+    font-family: 'Asap', sans-serif;
+    background-color: #474b24ff !important;
+    color: #ffffff;
+}
+
+.donation-image-container {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #d8c8a7ff;
+    background-color: #fefdf8;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.goal-banner {
+    background-color: #8B5E3C;
+    color: #ffffff;
+    font-family: 'Asap', sans-serif;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.donation-image {
+    max-height: 300px;
+    width: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* Override Bootstrap dl-horizontal truncation */
+.dl-horizontal dt {
+    white-space: normal;
+}

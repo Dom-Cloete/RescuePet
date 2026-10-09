@@ -1,0 +1,54 @@
+﻿@model domRescuePet.Models.HomeViewModel
+
+<!-- header section -->
+<div class="text-center">
+    <h1>Welcome to RescuePet</h1>
+    <p>Making a difference, one adoption at a time.</p>
+
+    <!-- pets adopted count -->
+    <p class="mt-3">
+        <strong class="accent">@Model.AdoptedPetsCount</strong> pets have already been adopted!
+    </p>
+</div>
+
+<hr />
+
+<!-- table with recent adoptions -->
+<h2>Recent Adoptions</h2>
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Adopter</th>
+                    <th>Pet</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var adoption in Model.Adoptions)
+                {
+                    <tr>
+                        <td>@adoption.AdopterName</td>
+                        <td>@adoption.PetName</td>
+                        <td>@adoption.AdoptionDate.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- about section-->
+    <div class="col-md-4">
+        <div class="about-box">
+            <h3>About RescuePets</h3>
+            <p>
+                RescuePets is dedicated to connecting loving homes with pets in need.
+                We make the adoption process simple, transparent and compassionate.
+            </p>
+
+            <!-- button -> view all pets -->
+            <a href="@Url.Action("Pets", "Home")" class="btn">VIEW PETS</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿@model domRescuePet.Models.Pet
+@{
+    ViewBag.Title = "Adopt";
+}
+
+<h1 class="text-center mb-4">@Model.PetName is up for Adoption!</h1>
+
+<div class="adopt-card row">
+    <div class="col-md-6 mb-3">
+        <!-- image -->
+        <div class="pet-image-container">
+            @if (!string.IsNullOrEmpty(Model.GetImage))
+            {
+                <img src="data:image/png;base64,@Model.GetImage" class="img-fluid rounded" />
+            }
+            else
+            {
+                <div class="no-image d-flex justify-content-center align-items-center">
+                    <span>No Image Available</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="pet-details p-3">
+            <!-- pet details = detailed -->
+            <h3 class="section-label">Pet Details</h3>
+            <p class="spec"><strong>Name:</strong> @Model.PetName</p>
+            <p class="spec"><strong>Gender:</strong> @Model.Gender</p>
+            <p class="spec"><strong>Location:</strong> @Model.LocationName</p>
+            <p class="spec"><strong>Age:</strong> @Model.Age yrs</p>
+            <p class="spec"><strong>Weight:</strong> @Model.Weight kg</p>
+
+            <div class="pet-story mt-3">
+                <h6>@Model.PetName's Story</h6>
+                <p>@Model.PetStory_Long</p>
+            </div>
+
+            <hr />
+
+            <!-- adopter details -->
+            <h3 class="section-label">User Details</h3>
+            <form asp-action="Adopt" method="post">
+                <input type="hidden" name="petId" value="@Model.PetId" />
+
+                <!-- user name filter -->
+                <div class="mb-3">
+                    <label for="adopterUserId" class="form-label">Select User</label>
+                    <select id="adopterUserId" name="adopterUserId" class="form-control">
+                        <option value="">Select User</option>
+                        @foreach (var user in ViewBag.Users as SelectList)
+                        {
+                            <option value="@user.Value">@user.Text</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- user phone number filter -->
+                <div class="mb-3">
+                    <label for="adopterPhoneId" class="form-label">Select Phone</label>
+                    <select id="adopterPhoneId" name="adopterPhoneId" class="form-control">
+                        <option value="">Select Phone</option>
+                    </select>
+                </div>
+
+                <!-- adopt button = call saveAdopt method -->
+                <button type="submit" class="btn btn-block adopt-btn">Adopt Now</button>
+            </form>
+        </div>
+    </div>
+ </div>
+
+@section Scripts {
+    <script>
+
+    /* populate user phone number filter = number according to user */
+    $(document).ready(function () {
+        $("#adopterUserId").change(function () {
+            var userId = $(this).val();
+            var phoneDropdown = $("#adopterPhoneId");
+            phoneDropdown.empty().append('<option value="">Select Phone</option>');
+
+            if (userId) {
+                $.getJSON('@Url.Action("GetPhonesByUser", "Home")', { userId: userId }, function (phones) {
+                    $.each(phones, function (i, phone) {
+                        phoneDropdown.append('<option value="' + phone.PhoneId + '">' + phone.PhoneNumber + '</option>');
+                    });
+                });
+            }
+        });
+    });
+    </script>
+}
